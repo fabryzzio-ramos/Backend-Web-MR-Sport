@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const cookieParser = require("cookie-parser");
 
 const conectarDB = require("./config/database");
 
@@ -10,7 +11,11 @@ const app = express();
 conectarDB();
 
 // MIDDLEWARES GLOBALES
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+    origin: "https://web-mr-sport.vercel.app",
+    credentials: true
+}));
 app.use(express.json());
 
 // RUTAS

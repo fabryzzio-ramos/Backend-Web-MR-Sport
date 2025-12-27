@@ -3,10 +3,8 @@ const Usuario = require("../models/Usuario");
 
 async function auth(req, res, next) {
     try {
-        const header = req.headers.authorization;
-        if (!header || !header.startsWith("Bearer ")) return res.status(401).json({ mensaje: "No autorizado" });
-
-        const token = header.split(" ")[1];
+        const token = req.cookies.token;
+        if (!token) return res.status(401).json({ mensaje: "No autorizado" });
 
         // VERIFICAR TOKEN
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

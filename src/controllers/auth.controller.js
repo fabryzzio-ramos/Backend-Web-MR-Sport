@@ -50,6 +50,13 @@ async function login(req, res) {
             { expiresIn: "7d" }
         );
 
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", //OBLIGATORIO EN PROD
+            sameSite: "none", //VERCEL + RENDER
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
         res.json({
             token,
             usuario: {
@@ -64,4 +71,21 @@ async function login(req, res) {
     }
 }
 
-module.exports = { registrar, login };
+function logout (req, res) {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none"
+    });
+
+    res.json({ mensaje: "Sesion cerrada" });
+}
+
+async function getMe(req, res) {
+    res.json({
+        id: req.usuario.id,
+        rol: req.usuario.rol
+    });
+};
+
+module.exports = { registrar, login, logout, getMe };
