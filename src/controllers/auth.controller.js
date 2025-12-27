@@ -53,7 +53,7 @@ async function login(req, res) {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production", //OBLIGATORIO EN PROD
-            sameSite: "none", //VERCEL + RENDER
+            sameSite: "strict", //VERCEL + RENDER
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -74,8 +74,8 @@ async function login(req, res) {
 function logout (req, res) {
     res.clearCookie("token", {
         httpOnly: true,
-        secure: true,
-        sameSite: "none"
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
     });
 
     res.json({ mensaje: "Sesion cerrada" });
@@ -84,7 +84,6 @@ function logout (req, res) {
 async function getMe(req, res) {
     res.json({
         id: req.usuario.id,
-        rol: req.usuario.rol
     });
 };
 
