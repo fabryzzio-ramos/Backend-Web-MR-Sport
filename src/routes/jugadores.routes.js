@@ -11,7 +11,7 @@ router.get("/", listarJugadores);
 
 // ADMIN
 router.post("/", auth, admin, upload.single("foto"), crearJugador);
-router.put("/:id", auth, admin, actualizarJugador);
+router.put("/:id", auth, admin, upload.single("foto"), actualizarJugador);
 router.delete("/:id", auth, admin, eliminarJugador);
 
 module.exports = router;

@@ -14,7 +14,8 @@ const jugadorSchema = new mongoose.Schema(
             type: Number
         },
         foto: {
-            type: String
+            public_id: String,
+            url: String
         }
     }, { timestamps: true }
 );
