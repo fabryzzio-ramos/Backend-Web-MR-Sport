@@ -12,7 +12,7 @@ router.get("/:id", obtenerProducto);
 
 // ADMIN
 router.post("/", auth, admin, upload.single("imagen"), crearProducto);
-router.put("/:id", auth, admin, actualizarProducto);
+router.put("/:id", auth, admin, upload.single("imagen"), actualizarProducto);
 router.delete("/:id", auth, admin, eliminarProducto);
 
 module.exports = router;

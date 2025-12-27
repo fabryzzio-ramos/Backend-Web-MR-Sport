@@ -18,7 +18,8 @@ const productoSchema = new mongoose.Schema(
             default: 0
         },
         imagen: {
-            type: String
+            public_id: String,
+            url: String
         }
     }, { timestamps: true }
 );
