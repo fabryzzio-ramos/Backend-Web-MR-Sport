@@ -52,8 +52,8 @@ async function login(req, res) {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production", //OBLIGATORIO EN PROD
-            sameSite: "strict", //VERCEL + RENDER
+            secure: true, //OBLIGATORIO EN PROD
+            sameSite: "none", //VERCEL + RENDER
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -74,8 +74,8 @@ async function login(req, res) {
 function logout (req, res) {
     res.clearCookie("token", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
+        secure: true,
+        sameSite: "none"
     });
 
     res.json({ mensaje: "Sesion cerrada" });
