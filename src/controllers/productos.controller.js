@@ -3,7 +3,10 @@ const Producto = require("../models/Producto");
 // CREAR PRODUCTO (ADMIN)
 async function crearProducto(req, res) {
     try {
-        const producto = new Producto(req.body);
+        const producto = await Producto.create({
+            ...req.body,
+            imagen: req.file?.path || null
+        });
         await producto.save();
         res.status(201).json(producto);
     } catch (error) {

@@ -3,7 +3,10 @@ const Jugador = require("../models/Jugador");
 // CREAR JUGADOR (ADMIN)
 async function crearJugador(req, res) {
     try {
-        const jugador = new Jugador(req.body);
+        const jugador = await Jugador.create({
+            ...req.body,
+            foto: req.file?.path || null
+        });
         await jugador.save();
         res.status(201).json(jugador);
     } catch (error) {
