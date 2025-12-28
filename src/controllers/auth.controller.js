@@ -54,7 +54,7 @@ async function login(req, res) {
             httpOnly: true,
             secure: isProd, //OBLIGATORIO EN PROD
             sameSite: isProd ? "none" : "lax", //VERCEL + RENDER
-path: "/"
+path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
