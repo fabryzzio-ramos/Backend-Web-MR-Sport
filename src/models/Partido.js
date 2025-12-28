@@ -4,29 +4,34 @@ const partidoSchema = new mongoose.Schema(
     {   
         local: {
             type: String,
-            required: true
+            required: true,
+            trim: true 
         },
         rival: {
             type: String,
-            required: true
+            required: true,
+            trim: true 
         },
         logo: {   
-                local: { type: String },
-                rival: { type: String },
+                local: { url: String, public_id: String },
+                rival: { url: String, public_id: String }
             },
         fecha: {
             type: Date,
             required: true
         },
         lugar: {
-            type: String
+            type: String,
+            trim: true
         },
         competicion: {
             type: String,
-            required: true
+            required: true,
+            trim: true
         },
         resultado: {
-            type: String
+            type: String,
+            trim: true
         }
     }, { timestamps: true }
 );
