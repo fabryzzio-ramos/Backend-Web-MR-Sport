@@ -7,7 +7,7 @@ const storage = new CloudinaryStorage({
     params: {
         folder: "mr-sport",
         allowed_formats: ["jpg", "png", "webp"],
-        transformation : [{ with: 800, crop: "limit" }]
+        transformation : [{ width: 800, crop: "limit" }]
     }
 });
 
