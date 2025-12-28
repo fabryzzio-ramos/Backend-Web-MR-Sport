@@ -1,7 +1,7 @@
 const Usuario = require("../models/Usuario");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const isProd = process.env.NODE_ENV === "production";
 
 // REGISTRO
 async function registrar(req, res) {
@@ -52,8 +52,8 @@ async function login(req, res) {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: true, //OBLIGATORIO EN PROD
-            sameSite: "none", //VERCEL + RENDER
+            secure: isProd, //OBLIGATORIO EN PROD
+            sameSite: isProd ? "none" : "lax", //VERCEL + RENDER
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -74,8 +74,8 @@ async function login(req, res) {
 function logout (req, res) {
     res.clearCookie("token", {
         httpOnly: true,
-        secure: true,
-        sameSite: "none"
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax"
     });
 
     res.json({ mensaje: "Sesion cerrada" });
