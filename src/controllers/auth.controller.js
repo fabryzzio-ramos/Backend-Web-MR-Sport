@@ -54,7 +54,6 @@ async function login(req, res) {
             httpOnly: true,
             secure: isProd, //OBLIGATORIO EN PROD
             sameSite: isProd ? "none" : "lax", //VERCEL + RENDER
-path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -77,7 +76,6 @@ function logout (req, res) {
         httpOnly: true,
         secure: isProd,
         sameSite: isProd ? "none" : "lax",
-        path: "/" 
     });
 
     res.json({ mensaje: "Sesion cerrada" });
