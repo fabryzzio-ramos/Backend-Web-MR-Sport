@@ -13,7 +13,18 @@ conectarDB();
 // MIDDLEWARES GLOBALES
 app.use(cookieParser());
 app.use(cors({
-    origin: "https://web-mr-sport.vercel.app",
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            "https://web-mr-sport.vercel.app",
+            "http://localhost:5173"
+        ];
+
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("No permitido por CORS"));
+        }
+    },
     credentials: true
 }));
 app.use(express.json());
