@@ -83,12 +83,7 @@ function logout (req, res) {
 
 async function getMe(req, res) {
     res.json({
-        usuario: {
-            id: req.usuario._id,
-            nombre: req.usuario.nombre,
-            correo: req.usuario.correo,
-            rol: req.usuario.rol
-            }
+        usuario: req.usuario
     });
 };
 
