@@ -7,7 +7,7 @@ const storageProducto = new CloudinaryStorage({
     params: {
         folder: "mr-sport/productos",
         allowed_formats: ["jpg", "png", "webp"],
-        transformation: [{ width: 800, height: 1000, crop: "fill", gravity: "center" }]
+        transformation: [{ width: 600, height: 600, crop: "fill", gravity: "center" }]
     }
 });
 
