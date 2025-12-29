@@ -11,10 +11,14 @@ const ordenSchema = new mongoose.Schema(
             {
                 producto: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: "Producto"
+                    ref: "Producto",
+                    required: true
                 },
+                nombre: String,
+                imagen: String,
                 precio: {
-                    type: Number
+                    type: Number,
+                    required: true
                 },
                 cantidad: {
                     type: Number,
@@ -30,10 +34,7 @@ const ordenSchema = new mongoose.Schema(
             type: String,
             enum: ["pendiente", "pagado", "enviado"],
             default: "pendiente"
-        },
-        createAt: {
-            type: Date
-        },
+        }
     }, { timestamps: true }
 );
 
