@@ -13,6 +13,9 @@ const ordenSchema = new mongoose.Schema(
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "Producto"
                 },
+                precio: {
+                    type: Number
+                },
                 cantidad: {
                     type: Number,
                     required: true
@@ -27,7 +30,10 @@ const ordenSchema = new mongoose.Schema(
             type: String,
             enum: ["pendiente", "pagado", "enviado"],
             default: "pendiente"
-        }
+        },
+        createAt: {
+            type: Date
+        },
     }, { timestamps: true }
 );
 
