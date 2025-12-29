@@ -7,7 +7,7 @@ const storageBanners = new CloudinaryStorage({
     params: {
         folder: "mr-sport/banners",
         allowed_formats: ["jpg", "png", "webp"],
-        transformation: [{ width: 1200, height: 675, crop: "fill" }]
+        transformation: [{ width: 1200, height: 600, crop: "fill" }]
     }
 });
 
