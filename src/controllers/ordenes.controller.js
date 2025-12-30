@@ -13,7 +13,7 @@ async function crearOrden(req, res) {
         if (!productos || productos.length === 0 ) return res.status(400).json({ mensaje: "Carrito vacio" });
 
         const metodosValidos = ["yape", "plin"];
-        if (!metodoPago || !metodosValidos.includes(metodoPago)) {
+        if (metodoPago && !metodosValidos.includes(metodoPago)) {
             await session.abortTransaction();
             return res.status(400).json({mensaje: "Metodo de pago invalido"});
         }
@@ -56,7 +56,7 @@ async function crearOrden(req, res) {
             usuario: req.usuario.id,
             productos: productosOrden,
             total,
-            metodoPago,
+            metodoPago: metodoPago || undefined,
         });
         
         await orden.save({session});
@@ -72,6 +72,32 @@ async function crearOrden(req, res) {
     }
 }
 
+async function actualizarPago(req, res) {
+    try {
+        const orden = await Orden.findById(req.params.id);
+        if (!orden) return res.status(404).json({ mensaje: "Orden no encontrada" });
+
+        if (req.body.metodoPago) {
+            const metodoValidos = ["yape", "plin"];
+            if (!metodoValidos.includes(req.body.metodoPago)) {
+                return res.status().json({ mensaje: "Metodo de pago invalido"});
+            }
+            orden.metodoPago = req.body.metodoPago;
+        }
+
+        if (req.file) {
+            orden.comprobante = {
+                url: req.file.path,
+                public_id: req.file.filename
+            };
+        }
+
+        await orden.save();
+        res.json({ mensaje: "Pago actualizado correctamente", orden});
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al actualizar pago"});
+    }
+}
 // OBTENER ORDENES DEL  USUARIO
 async function misOrdenes(req, res) {
     try {
