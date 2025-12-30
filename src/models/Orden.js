@@ -40,7 +40,8 @@ const ordenSchema = new mongoose.Schema(
             enum: ["yape", "plin"],
         },
         comprobante: {
-            type: String
+            url: String,
+            public_id: String
         }
     }, { timestamps: true }
 );

@@ -9,8 +9,14 @@ async function crearOrden(req, res) {
     session.startTransaction();
 
     try {
-        const { productos } = req.body;
+        const { productos, metodoPago } = req.body;
         if (!productos || productos.length === 0 ) return res.status(400).json({ mensaje: "Carrito vacio" });
+
+        const metodosValidos = ["yape", "plin"];
+        if (!metodoPago || !metodosValidos.includes(metodoPago)) {
+            await session.abortTransaction();
+            return res.status(400).json({mensaje: "Metodo de pago invalido"});
+        }
 
         let total = 0;
         const productosOrden = [];
@@ -49,7 +55,8 @@ async function crearOrden(req, res) {
         const orden = new Orden({
             usuario: req.usuario.id,
             productos: productosOrden,
-            total
+            total,
+            metodoPago,
         });
         
         await orden.save({session});
@@ -90,16 +97,17 @@ async function todasOrdenes(req, res) {
 async function actualizarEstadoOrden(req, res) {
     try {
         const { estado } = req.body;
-        const estadosValidos = ["pendiente", "pagado", "enviado"];
+        const estadosValidos = ["pagado", "enviado"];
 
         if (!estadosValidos.includes(estado)) {
             return res.status(400).json({ mensaje: "Estado invalido" });
         }
-        const orden = await Orden.findById(req.params.id);
+        const orden = await Orden.findByIdAndUpdate(
+            req.params.id,
+            { estado },
+            { new: true }
+        );
         if (!orden) return res.status(404).json({mensaje: "Orden no encontrada"});
-
-        orden.estado = estado
-        await orden.save();
 
         res.json(orden);
     } catch (error) {

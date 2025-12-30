@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-const { crearOrden, misOrdenes, todasOrdenes, actualizarEstadoOrden } = require("../controllers/ordenes.controller");
+const { crearOrden, misOrdenes, todasOrdenes, actualizarEstadoOrden, subirComprobante } = require("../controllers/ordenes.controller");
 const auth = require("../middlewares/auth");
 const admin = require("../middlewares/admin");
+const uploadComprobante = require("../middlewares/upload/uploadComprobantes");
 
 // USUARIO
 router.post("/", auth, crearOrden);
+router.put("/:id/comprobante", auth, uploadComprobante.single("comprobante"), subirComprobante)
 router.get("/mis-ordenes", auth, misOrdenes);
 
 // ADMIN
