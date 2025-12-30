@@ -85,4 +85,25 @@ async function todasOrdenes(req, res) {
     }
 };
 
-module.exports = { crearOrden, misOrdenes, todasOrdenes };
+// CAMBIAR DE ESTADO (ADMIN)
+async function actualizarEstadoOrden(req, res) {
+    try {
+        const { estado } = req.body;
+        const estadosValidos = ["pendiente", "pagado", "enviado"];
+
+        if (!estadosValidos.includes(estado)) {
+            return res.status(400).json({ mensaje: "Estado invalido" });
+        }
+        const orden = await Orden.findById(req.params.id);
+        if (!orden) return res.status(404).json({mensaje: "Orden no encontrada"});
+
+        orden.estado = estado
+        await orden.save();
+
+        res.json(orden);
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al actualizar estado" });
+    }
+}
+
+module.exports = { crearOrden, misOrdenes, todasOrdenes, actualizarEstadoOrden };
