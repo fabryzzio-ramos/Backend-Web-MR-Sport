@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Orden = require("../models/Orden");
 const Producto = require("../models/Producto");
+const cloudinary = require("../config/cloudinary");
 
 // CREAR ORDEN (USUARIO LOGUEADO)
 async function crearOrden(req, res) {
@@ -106,4 +107,25 @@ async function actualizarEstadoOrden(req, res) {
     }
 }
 
-module.exports = { crearOrden, misOrdenes, todasOrdenes, actualizarEstadoOrden };
+async function subirComprobante(req, res) {
+    try {
+        const orden = await Orden.findById(req.params.id);
+        if (!orden) return res.status(404).json({mensaje: "Orden no encontrada"});
+
+        if (!req.file) {
+            return res.status(400).json({mensaje: "Comprobante requerido"});
+        }
+
+        orden.comprobante = {
+            url: req.file.path,
+            public_id: req.file.filename
+        };
+
+        await orden.save();
+        res.json({ mensaje: "Comprobante enviado correctamente" });
+    } catch (error) {
+        res.status(500).json({ mensaje: "Error al subir comprobante" });
+    }
+}
+
+module.exports = { crearOrden, misOrdenes, todasOrdenes, actualizarEstadoOrden, subirComprobante };

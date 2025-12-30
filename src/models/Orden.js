@@ -34,6 +34,13 @@ const ordenSchema = new mongoose.Schema(
             type: String,
             enum: ["pendiente", "pagado", "enviado"],
             default: "pendiente"
+        },
+        metodoPago: {
+            type: String,
+            enum: ["yape", "plin"],
+        },
+        comprobante: {
+            type: String
         }
     }, { timestamps: true }
 );
