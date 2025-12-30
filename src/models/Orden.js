@@ -32,7 +32,7 @@ const ordenSchema = new mongoose.Schema(
         },
         estado: {
             type: String,
-            enum: ["pendiente", "pagado", "enviado"],
+            enum: ["pendiente", "pagado", "enviado", "cancelado"],
             default: "pendiente"
         },
         metodoPago: {
