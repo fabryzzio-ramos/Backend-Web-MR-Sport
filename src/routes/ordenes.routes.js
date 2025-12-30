@@ -8,7 +8,7 @@ const uploadComprobante = require("../middlewares/upload/uploadComprobantes");
 
 // USUARIO
 router.post("/", auth, crearOrden);
-router.put("/:id/comprobante", auth, uploadComprobante.single("comprobante"), subirComprobante)
+router.post("/:id/comprobante", auth, uploadComprobante.single("comprobante"), subirComprobante)
 router.get("/mis-ordenes", auth, misOrdenes);
 
 // ADMIN
