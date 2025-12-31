@@ -18,6 +18,11 @@ async function crearOrden(req, res) {
             return res.status(400).json({mensaje: "Metodo de pago invalido"});
         }
 
+        if (!req.file) {
+            await session.abortTransaction();
+            return res.status(400).json({ mensaje: "Comprobante requerido" });
+        }
+
         let total = 0;
         const productosOrden = [];
 
@@ -56,7 +61,11 @@ async function crearOrden(req, res) {
             usuario: req.usuario.id,
             productos: productosOrden,
             total,
-            metodoPago: metodoPago || undefined,
+            metodoPago: metodoPago || null,
+            comprobante: req.file ? {
+                url: req.file.path,
+                public_id: req.file.filename
+            } : null
         });
         
         await orden.save({session});
@@ -141,25 +150,4 @@ async function actualizarEstadoOrden(req, res) {
     }
 }
 
-async function subirComprobante(req, res) {
-    try {
-        const orden = await Orden.findById(req.params.id);
-        if (!orden) return res.status(404).json({mensaje: "Orden no encontrada"});
-
-        if (!req.file) {
-            return res.status(400).json({mensaje: "Comprobante requerido"});
-        }
-
-        orden.comprobante = {
-            url: req.file.path,
-            public_id: req.file.filename
-        };
-
-        await orden.save();
-        res.json({ mensaje: "Comprobante enviado correctamente" });
-    } catch (error) {
-        res.status(500).json({ mensaje: "Error al subir comprobante" });
-    }
-}
-
-module.exports = { crearOrden, misOrdenes, todasOrdenes, actualizarEstadoOrden, subirComprobante };
+module.exports = { crearOrden, misOrdenes, todasOrdenes, actualizarEstadoOrden };
